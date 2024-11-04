@@ -6,6 +6,9 @@
     "light": "/logo/light.svg"
   },
   "favicon": "/favicon.svg",
+  "background": {
+    "style": "grid"
+  },
   "colors": {
     "primary": "#06626B",
     "light": "#2C97A0",
@@ -17,8 +20,12 @@
   },
   "topbarLinks": [
     {
-      "name": "V8 Bridge",
-      "url": "https://layerswap.io/v8"
+      "name": "V8 Protocol",
+      "url": "https://layerswap.notion.site/"
+    },
+    {
+      "name": "Community",
+      "url": "https://t.me/layerswap_dev"
     }
   ],
   "topbarCtaButton": {
@@ -26,22 +33,18 @@
     "url": "https://ix9g7fdi92w.typeform.com/to/EFRPexAw"
   },
   "tabs": [
-    {
-      "name": "API Reference",
-      "openapi": "https://atomic-dev.layerswap.cloud/swagger/v8bridge_deployment/swagger.json",
-      "url": "api-reference"
-    }
   ],
   "anchors": [
     {
-      "name": "V8 Protocol",
+      "name": "Documentation",
       "icon": "book-open-cover",
-      "url": "https://layerswap.notion.site/"
+      "url": "/"
     },
     {
-      "name": "Community",
-      "icon": "telegram",
-      "url": "https://t.me/layerswap_dev"
+      "name": "API Reference",
+      "icon": "terminal",
+      "openapi": "https://atomic-dev.layerswap.cloud/swagger/v8bridge_deployment/swagger.json",
+      "url": "api-reference"
     }
   ],
   "navigation": [
@@ -63,5 +66,8 @@
     "x": "https://x.com/layerswap",
     "github": "https://github.com/layerswap",
     "linkedin": "https://linkedin.com/company/layerswap"
+  },
+  "api" : {
+    "baseUrl" : "https://atomic-dev.layerswap.cloud/"
   }
 }
