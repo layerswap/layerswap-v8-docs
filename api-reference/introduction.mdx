@@ -4,30 +4,18 @@ description: 'Example section for showcasing API endpoints'
 ---
 
 <Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
+  V8 deployment currently supports testnets and networks deployed using the Optimism stack. To get API-keys [fill in this form](https://ix9g7fdi92w.typeform.com/to/EFRPexAw).
 </Note>
 
 ## Welcome
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+V8 Bridge Deployment API allows automated deployment of a **trustless** V8 bridge to your rollup. The deployment is fully automatic and takes under 15 minutes, making the network instantly visible and accessible at https://layerswap.io/v8.
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+### Deployment Actions
 
-## Authentication
+1. Configures network attributes, logos, names, RPC, and explorer URLs
+2. Initializes a Solver with initial liquidity from the canonical bridge
+3. Deploys [V8 contracts](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/evm) on the target network
+4. Creates and enables routes supporting the same asset
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
-
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+Once completed, your network is automatically added to the [V8 interface](https://layerswap.io/v8), enabling users to bridge assets trustlessly between chains using the enhanced V8 atomic swaps.
