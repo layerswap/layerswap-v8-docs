@@ -1,7 +1,9 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: ''
 ---
+
+import HowItWorksSnippet from '/snippets/how-it-works.mdx';
 
 <Note>
   V8 deployment currently supports testnets and networks deployed using the Optimism stack. To get API-keys [fill in this form](https://ix9g7fdi92w.typeform.com/to/EFRPexAw).
@@ -9,11 +11,10 @@ description: 'Example section for showcasing API endpoints'
 
 V8 Bridge Deployment API allows automated deployment of a **trustless** V8 bridge to your rollup. The deployment is fully automatic and takes under 15 minutes, making the network instantly visible and accessible at https://layerswap.io/v8.
 
-## Example: Deploying V8 Bridge to Optmistic rollup
+<HowItWorksSnippet />
 
-POST /deploy
-
-```json
+<RequestExample>
+```json Deploy V8 Bridge on OP stack
 {
   "chain_id": 123420000697,
   "network_name": "BLASTAPI_TESTNET",
@@ -31,14 +32,14 @@ POST /deploy
   "tx_lookup_explorer_template": "https://serious-guide-model.cloud.blockscout.com/tx/{0}"
 }
 ```
+</RequestExample>
 
-Response
 
-```json
+<ResponseExample>
+```json Example Response
 {
     "deployment_id": "535f97cd-88b6-49d2-9ed1-5b9b5673bffe",
     "status": "Accepted"
 }
 ```
-
-Once the deployment is completed, network is automatically added to [V8 Interface](https://layerswap.io/v8).
+</ResponseExample>

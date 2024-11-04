@@ -3,22 +3,15 @@ title: Introduction
 description: 'Welcome to the V8 Bridge Deployment API home'
 ---
 
+import HowItWorksSnippet from '/snippets/how-it-works.mdx';
+
 ## V8 bridging protocol
 Layerswap V8 is the first trustless asset bridging protocol that enables any network to join permissionlessly. It leverages an advanced version of Atomic Swaps for completely trustless asset exchange between two parties (user and solver).
 
 ### Bridge Deployment API
 Easily deploy a trustless bridge to your rollup with Layerswap’s V8 Bridge Deployment API. This permissionless, automated system requires no manual intervention, completing the entire bridge deployment process in under 15 minutes. Once deployed, your network is instantly accessible for cross-chain bridging at https://layerswap.io/v8.
 
-### How it Works?
-The V8 bridge deployment system follows a series of automated steps to establish a secure, trustless bridge between networks. Deployed on the Layerswap V8 Protocol, the bridge leverages advanced Atomic Swaps for seamless and secure cross-chain transactions. Learn more about the protocol here: https://layerswap.notion.site
-
-Deployment Steps:
-
-1) Validates Network Parameters (e.g., chain IDs, RPCs)
-2) Deploys [V8 Contracts](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/evm) on your network
-3) Bootstraps Solver with initial liquidity from the canonical bridge
-4) Configures Routes for all existing networks and supported assets
-5) Adds Your Network to the [V8 interface](https://layerswap.io/v8).
+<HowItWorksSnippet />
 
 <Note>
   Security Note: The V8 Protocol ensures trustless asset exchange via atomic swaps, eliminating counterparty risk and third-party reliance.
