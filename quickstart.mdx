@@ -3,25 +3,19 @@ title: 'Quickstart'
 description: 'Start deploying a trustless bridge on any rollup in under 10 minutes'
 ---
 
-<CardGroup cols={2}>
-  <Card title="V8 Protocol" icon="square-1">
-    Learn more about V8 Protocol, by reading the [blog post](https://layerswap.notion.site/) and the [protocol spec](https://layerswap.notion.site/Protocol-Spec-29fcc43fe52742fe9b0eab336f6c2ebc)
-  </Card>
-  <Card title="Dev Communnity" icon="square-2">
-    Join [Dev Communnity](https://t.me/layerswap_dev), to get quick answers to your questions
-  </Card>
-  <Card title="API-Keys" icon="square-3">
-    V8 API Deployment is currently in alpha. For early-access fill in [this form](https://ix9g7fdi92w.typeform.com/to/EFRPexAw) for API-Keys
-  </Card>
-  <Card title="API Reference" icon="square-4">
-    Explore the [API Endpoints](api-reference)
-  </Card>
-</CardGroup>
+## V8 bridging protocol
+Layerswap V8 is the first [trustless asset bridging protocol](https://layerswap.notion.site) that enables any network to join permissionlessly. It leverages an advanced version of Atomic Swaps for a completely trustless asset exchange between two parties: the user and the solver..
 
-## 1) Get API Keys
+## Bridge Deployment API
+This API deploys a trustless bridge to your rollup. The automated system requires no manual intervention, completing the entire bridge deployment process in under 15 minutes. Once deployed, your network is instantly accessible for cross-chain bridging at https://layerswap.io/v8.
+
+## Getting Started
+Follow the instructions below to learn how to autonomously deploy a trustless bridge on any rollup.
+
+### 1) Get API Keys
 The Layerswap V8 Bridge Deployment API is currently in early-access. To request your API keys, please fill out [this form](https://ix9g7fdi92w.typeform.com/to/EFRPexAw).
 
-## 2) Call the Deploy Bridge Endpoint
+### 2) Call the Deploy Bridge Endpoint
 Use the Deploy Bridge endpoint to deploy your bridge. Here’s an example for deploying a bridge on the OP Stack rollup:
 
 ```bash
@@ -47,8 +41,8 @@ curl --request POST \
 }'
 ```
 
-## 3) Check Deployment Status
-To monitor the deployment process, periodically call the Deployment Status endpoint until the status returns as Completed:
+### 3) Check Deployment Status
+To monitor the deployment process, periodically call the Deployment Status endpoint:
 
 ```bash
 curl --request GET \
@@ -58,5 +52,22 @@ curl --request GET \
 
 Continue polling until the response status is `Completed`.
 
-## 4) Access Your Network for Bridging
+### 4) Access Your Network for Bridging
 Once the deployment is complete, your bridge will be available for access. Visit [Layerswap V8](https://layerswap.io/v8) to start bridging.
+
+## Get involved
+
+<CardGroup cols={2}>
+  <Card title="V8 Protocol" icon="square-1">
+    Learn more about V8 Protocol, by reading the [blog post](https://layerswap.notion.site/) and the [protocol spec](https://layerswap.notion.site/Protocol-Spec-29fcc43fe52742fe9b0eab336f6c2ebc)
+  </Card>
+  <Card title="Dev Communnity" icon="square-2">
+    Join [Dev Communnity](https://t.me/layerswap_dev), to get quick answers to your questions
+  </Card>
+  <Card title="API-Keys" icon="square-3">
+    V8 API Deployment is currently in alpha. For early-access fill in [this form](https://ix9g7fdi92w.typeform.com/to/EFRPexAw) for API-Keys
+  </Card>
+  <Card title="API Reference" icon="square-4">
+    Explore the [API Endpoints](api-reference)
+  </Card>
+</CardGroup>
