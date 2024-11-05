@@ -69,5 +69,10 @@
   },
   "api" : {
     "baseUrl" : "https://atomic-dev.layerswap.cloud/"
+  },
+  "metadata": {
+    "og:title": "Layerswap V8 Bridge Deployment API",
+    "og:description" : "Layerswap V8 Bridge Deploymnet API deploys a trustless bridge to your rollup. The automated system requires no manual intervention, completing the entire bridge deployment process in under 10 minutes. Once deployed, your network is instantly accessible for cross-chain bridging at https://layerswap.io/v8.",
+    "og:logo" : "/logo/dark.svg"
   }
 }
