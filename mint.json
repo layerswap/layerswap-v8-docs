@@ -72,6 +72,6 @@
   },
   "metadata": {
     "og:title": "Layerswap V8 Bridge Deployment API",
-    "og:description" : "Layerswap V8 Bridge Deploymnet API deploys a trustless bridge to your rollup. The automated system requires no manual intervention, completing the entire bridge deployment process in under 10 minutes. Once deployed, your network is instantly accessible for cross-chain bridging on V8 Bridge UI.",
+    "og:description" : "Layerswap V8 Bridge Deploymnet API deploys a trustless bridge to your rollup. The automated system requires no manual intervention, completing the entire bridge deployment process in under 10 minutes. Once deployed, your network is instantly accessible for cross-chain bridging on V8 Bridge UI."
   }
 }
