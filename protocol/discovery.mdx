@@ -1,0 +1,13 @@
+---
+title: 'Discovery'
+description: 'Description of the discovery system and the mechanics of the token'
+icon: lighthouse
+---
+
+Layerswap V8 has an on-chain [Discovery Registry](discovery) for protocol metadata and LPs to ensure users, auctions, and integrators can discover liquidity providers (LPs). LPs will register their addresses and the routes they support.
+
+Since the registry is permissionless, any person can register. Flood protection is necessary to prevent malicious actors from registering numerous "empty" LPs that fail to complete transactions and potentially DDoS the protocol.
+
+While staking could be a solution, it only works if we can determine an LP’s dishonesty in the network where the registry is deployed. However, autonomously verifying LP behavior is not possible, as the registry chain has no information about LP behavior in other chains.
+
+Therefore, the Discovery registry implements a burning mechanism. Any active/registering LPs will **lock in a certain amount of tokens,** which will be **burned** daily/monthly as a protocol fee for operating as an LP.

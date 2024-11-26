@@ -1,0 +1,14 @@
+---
+title: 'Slashing'
+description: 'Incentivizing liquidity providers to act honestly without creating inconveniences for users'
+icon: slash
+---
+
+Liquidity providers can sometimes misbehave, presenting several edge cases. For instance, an LP might choose not to release the user’s funds. In all possible scenarios, funds are not lost since the user can manually claim their funds.
+
+However, this creates a significant inconvenience for users. These issues need to be addressed by properly incentivizing LPs to act correctly. 
+We introduce an [Atomic pool](/protocol-spec/atomic-pool) where LPs voluntarily stake a small portion of their funds as a guarantee to ensure they release the user’s funds. If they fail to do so, they agree to be penalized by having their staked funds, or a portion thereof, slashed. 
+
+The main idea is that if anyone can provide a secret on the destination chain for the destination lock and the destination lock is not released to the user, it means LPs acted dishonestly, so they get [slashed](/protocol-spec/atomic-pool).
+
+LPs with locked amounts in the Atomic Pool will be more favorable to users during the LP selection process.

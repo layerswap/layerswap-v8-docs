@@ -1,0 +1,17 @@
+<Steps>
+  <Step title="User Commit">
+    The user creates a PreHTLC for LP(AB).
+  </Step>
+  <Step title="LP(AB) Commit">
+    Once detected, LP(AB) creates a PreHTLC for LP(BC).
+  </Step>
+  <Step title="LP(BC) Lock">
+    Then LP(BC) creates an HTLC for the user.
+  </Step>
+  <Step title="User, LP(AB) AddLock">
+    The user detects the last transaction, retrieves Hashlock, and converts their PreHTLC to an HTLC in Chain A. LP(AB) does the same in Chain B.
+  </Step>
+  <Step title="Unlocks">
+    Now, LP(BC) can release the user’s funds on Chain C and claim their funds on Chain B, while LP(AB) can claim their funds on Chain A.
+  </Step>
+</Steps>

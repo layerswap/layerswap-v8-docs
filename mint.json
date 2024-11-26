@@ -5,9 +5,14 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit" : true,
+    "raiseIssue": true
+  },
   "favicon": "/favicon.svg",
   "background": {
-    "style": "gradient"
+    "style": "grid"
   },
   "colors": {
     "primary": "#06626B",
@@ -18,47 +23,100 @@
       "to": "#06626B"
     }
   },
+  "sidebar" : {
+    "items": "border"
+  },
+  "modeToggle" : {
+    "default": "dark",
+    "isHidden": true
+  },
   "topbarLinks": [
-    {
-      "name": "V8 Protocol",
-      "url": "https://layerswap.notion.site/"
-    },
     {
       "name": "Community",
       "url": "https://t.me/layerswap_dev"
+    },
+    {
+      "name": "Github",
+      "url": "https://github.com/layerswap/layerswap-atomic-bridge"
     }
   ],
   "topbarCtaButton": {
-    "name": "Get API-Keys",
-    "url": "https://ix9g7fdi92w.typeform.com/to/EFRPexAw"
+    "name": "Try V8",
+    "url": "https://layerswap.io/v8"
   },
   "tabs": [
-  ],
-  "anchors": [
     {
       "name": "Documentation",
-      "icon": "book-open-cover",
       "url": "/"
     },
     {
-      "name": "API Reference",
-      "icon": "terminal",
+      "name": "Specification",
+      "url": "protocol-spec"
+    },
+    {
+      "name": "API References",
       "openapi": "https://atomic-dev.layerswap.cloud/swagger/v8bridge_deployment/swagger.json",
       "url": "api-reference"
     }
   ],
+  "anchors": [
+  ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Layerswap V8 Protocol",
       "pages": [
-        "quickstart",
-        "how-it-works"
+        "protocol/introduction",
+        "protocol/security",
+        {
+          "group": "Using the Protocol",
+          "icon": "chart-network",
+          "pages": ["protocol/usage-swap", "protocol/usage-add-new-network"]
+        },
+        "protocol/contracts"
+      ]
+    },
+    {
+      "group": "Protocol Concepts",
+      "pages": [
+        "protocol/the-protocol",
+        {
+          "group": "Atomic Swaps",
+          "icon": "swap",
+          "pages": ["protocol/atomic-swaps-overview", "protocol/atomic-swaps-prehtlc"]
+        },
+        "protocol/multi-hop",
+        "protocol/slashing",
+        "protocol/discovery",
+        "protocol/auction",
+        "protocol/dApp"
+      ]
+    },
+    {
+      "group": "Protocol Spec",
+      "pages": [
+        "protocol-spec/model",
+        "protocol-spec/edge-cases",
+        "protocol-spec/core",
+        "protocol-spec/atomic-pool",
+        "protocol-spec/discovery",
+        {
+          "group": "Implementation",
+          "icon": "chart-network",
+          "pages": ["protocol-spec/implementation-dApp", "protocol-spec/implementation-LP"]
+        }
       ]
     },
     {
       "group": "API Documentation",
       "pages": [
-        "api-reference/introduction"
+        {
+          "group": "Bridge Deployment API",
+          "icon": "bridge",
+          "pages": [
+            "api-reference/deploy-quickstart",
+            "api-reference/deploy-how-it-works"
+          ]
+        }
       ]
     }
   ],
@@ -71,8 +129,8 @@
     "baseUrl" : "https://atomic-dev.layerswap.cloud/"
   },
   "metadata": {
-    "og:title": "Layerswap V8 Bridge Deployment API",
-    "og:description" : "Layerswap V8 Bridge Deploymnet API deploys a trustless bridge to your rollup. The automated system requires no manual intervention, completing the entire bridge deployment process in under 5 minutes. Once deployed, your network is instantly accessible for cross-chain bridging on V8 Bridge UI.",
+    "og:title": "Layerswap V8 | Cross-Chain Swaps Protocol",
+    "og:description" : "Layerswap V8 is a trustless cross-chain swaps protocol with permissionless onboarding for any new EVM and altVM network.",
     "og:logo" : "/logo/dark.svg"
   }
 }

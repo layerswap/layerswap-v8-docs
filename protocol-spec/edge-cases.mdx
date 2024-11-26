@@ -1,0 +1,101 @@
+---
+title: 'Edge Cases'
+description: 'Describes potential failure scenarios and how the protocol handles them to ensure fund safety and transaction integrity'
+icon: light-emergency
+---
+
+<AccordionGroup>
+
+<Accordion title="Party 2 fails to release Party 1’s funds" icon="brake-warning">
+
+```mermaid
+sequenceDiagram
+    participant P1 as Party 1
+    participant SC as Source Chain
+    participant P2 as Party 2
+    participant DC as Destination Chain
+
+	
+    P1->>SC: commit()
+    SC-->>P2: TokenCommitted
+    P2->>DC: lock()
+    DC-->>P1: TokenLocked
+    P1->>SC: lockCommitment()
+    SC-->>P2: TokenLocked
+    P2->>SC: redeem()
+	  SC-->>P1: TokenRedeemed
+    P1->>DC: redeem()
+    DC-->>P1: TokenRedeemed
+```
+</Accordion>
+
+
+<Accordion title="Party 2 fails to release at all" icon="brake-warning">
+
+```mermaid
+sequenceDiagram
+    participant P1 as Party 1
+    participant SC as Source Chain
+    participant P2 as Party 2
+    participant DC as Destination Chain
+
+	
+    P1->>SC: commit()
+    SC-->>P2: TokenCommitted
+    P2->>DC: lock()
+    DC-->>P1: TokenLocked
+    P1->>SC: lockCommitment()
+    SC-->>P2: TokenLocked
+    Note over P2,DC: Timelock passes
+    P2->>DC: unlock()
+	  DC-->>P2: TokenUnlocked
+	  Note over P1,SC: Timelock passes
+    P1->>SC: unlock()
+    SC-->>P1: TokenUnlocked
+```
+
+</Accordion>
+
+<Accordion title="Party 1 fails to add lock to the commitment" icon="brake-warning">
+
+```mermaid
+sequenceDiagram
+    participant P1 as Party 1
+    participant SC as Source Chain
+    participant P2 as Party 2
+    participant DC as Destination Chain
+
+	
+    P1->>SC: commit()
+    SC-->>P2: TokenCommitted
+    P2->>DC: lock()
+    DC-->>P2: TokenLocked
+    
+    Note over P1,SC: Timelock passes
+    P1->>SC: uncommit()
+    SC-->>P1: TokenUncommited
+		
+		Note over P2,DC: Timelock passes
+    P2->>DC: unlock()
+    DC-->>P2: TokenUnlocked
+```
+
+### Party 2 fails to act on commitment
+
+```mermaid
+sequenceDiagram
+    participant P1 as Party 1
+    participant SC as Source Chain
+    participant P2 as Party 2
+    participant DC as Destination Chain
+
+	
+    P1->>SC: commit()
+    SC-->>P2: TokenCommitted
+    
+    Note over P1,SC: Timelock passes
+    P1->>SC: uncommit()
+    SC-->>P1: TokenUncommited
+```
+</Accordion>
+</AccordionGroup>

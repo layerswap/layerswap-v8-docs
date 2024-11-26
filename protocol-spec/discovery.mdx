@@ -1,0 +1,105 @@
+---
+title: 'Discovery'
+description: 'Explains an architectural specification for the Discovery Registry'
+icon: lighthouse
+---
+
+<Tabs>
+  <Tab title="Overview">
+    The Discovery Registry is designed to facilitate the discovery of LPs operating on the Layerswap V8 protocol. The system is fully decentralized, operating entirely on-chain, ensuring transparency and fairness. Thus, all registered LPs are given equal opportunities to be discovered.
+
+    ### Governance (WIP)
+
+    The Discovery System is governed by a DAO, represented as the `governor`. The governor is assigned by the contract creator and can only be set once using the `assignGovernor` function. 
+    The governor's sole responsibility is to update the discovery service fees, and only the governor is authorized to call the `updateFee` function.
+
+    ### Registration
+
+    Every LP can register in the system by calling the `register` function, providing the required data and specifying the desired discovery duration in days. Based on the specified duration, the LP must lock the corresponding amount of ERC20 tokens in the Discovery System's address, effectively burning them.
+
+    ### Discovery
+
+    To find the required LP, any user can call the public `discover` function, providing the source and destination chain details. The system will return LPs whose discovery time has not yet expired.
+
+    ### Extension
+
+    When an LP wants to extend its discovery time, it can call the `extendDiscoveryTime` function, providing the LP key and the desired extension duration in days. The LP must lock the required amount of ERC20 tokens in the system's address as a service fee based on the extension duration. If the discovery time has already expired, the new expiry time will start from the current timestamp. Otherwise, the expiry time will be updated by adding the new extension duration to the existing expiry time.
+
+    ### Cancellation
+
+    If an LP wants to stop its discovery, the owner can call the `stopDiscovery` function, providing the LP key. If the discovery time has not yet expired, a refund will be calculated for the remaining duration and transferred to the fee payer who initially paid the registration fees.
+
+  </Tab>
+  <Tab title="Code">
+    ```solidity
+    contract LPDiscovery {
+
+        // Emitted when the governor is assigned.
+        event GovernorAssigned(address indexed governor);
+        
+        // Emitted when the discovery `service fee` is updated.
+        event FeeUpdated(uint256 newFeePerDay);
+
+        // Emitted when an LP is successfully registered.
+        event LPRegistered(bytes32 indexed lpKey, address indexed feePayer);
+
+        // Emitted when an LP's discovery time is extended.
+        event DiscoveryTimeExtended(bytes32 indexed lpKey, uint256 newExpiryTime);
+
+        // Emitted when an LP stops its discovery and receives a refund.
+        event DiscoveryStopped(
+            bytes32 indexed lpKey,
+            address indexed feePayer,
+            uint256 refundAmount
+        );
+
+        // Initializes the Discovery System with the specified ERC20 token address (V8token_) and the daily fee rate (tokensPerDay_).
+        // Sets the contract deployer as the creator.
+        constructor(address V8token_, uint256 tokensPerDay_) { ... }
+
+        // Assigns a governor for the Discovery System. Can only be called by the **contract creator** and only once.
+        function assignGovernor(address governor_) public returns (address) { ... }
+
+        // Allows the governor to update the daily fee for the discovery service.
+        function updateFee(uint256 tokensPerDay_) public onlyGovernor returns (bool) { ... }
+
+        // Registers an LP by providing required data and the desired discovery duration in days. Locks the corresponding amount of ERC20 tokens in the system.
+        function register(
+            string memory fromChain,
+            uint256 fromChainId,
+            string memory fromNativeAsset,
+            string memory fromPreHTLCAddr,
+            string memory fromLPAddr,
+            string memory toChain,
+            string memory toNativeAsset,
+            uint256 toChainId,
+            string memory toPreHTLCAddr,
+            string memory toLPAddr,
+            uint256 expiryTimeDays
+        ) public returns (bytes32) { ... }
+
+        // Extends the discovery time for an LP by locking additional ERC20 tokens based on the extension duration. Updates the expiry time accordingly.
+        function extendDiscoveryTime(bytes32 key, uint256 expiryExtensionDay) public returns (bool) { ... }
+
+        // Stops the discovery for an LP. If discovery time remains, calculates and refunds the unused fees to the fee payer.
+        function stopDiscovery(bytes32 key) public returns (bool) { ... }
+
+        // Allows querying LPs based on source and destination chain details. Returns only active LPs whose discovery time has not expired.
+        function discover(
+            string memory fromChain,
+            string memory fromNativeAsset,
+            uint256 fromChainId,
+            string memory toChain,
+            string memory toNativeAsset,
+            uint256 toChainId
+        ) public view returns (LP[] memory) { ... }
+
+        // Retrieves the details of a registered LP using its key.
+        function getLP(bytes32 key) public view returns (LP memory) { ... }
+
+        // Returns the current daily fee for the discovery service.
+        function getServicePrice() public view returns (uint256) { ... }
+    }
+    ```
+  </Tab>
+</Tabs>

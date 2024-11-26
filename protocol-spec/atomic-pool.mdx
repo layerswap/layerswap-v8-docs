@@ -1,0 +1,83 @@
+---
+description: 'Explains the mechanics of the Atomic Stake pool and how LPs get punished for misconduct'
+icon: pool-8-ball
+---
+
+<Tabs>
+  <Tab title="Overview">
+    In the Atomic Stake pool, LPs voluntarily stake a small portion of their funds as a guarantee to ensure they release the user’s funds. If they fail to do so, they are penalized by having their staked funds, or a portion thereof, slashed. LPs with locked amounts in the atomic pool will be more favorable to users during the LP selection process.
+    It’s important to emphasize that even if the LP fails to release the user’s funds, those funds are still recoverable by the user through a manual claim, preserving the atomic nature of the process. 
+    
+    This outlines the standard PreHTLC flow in the scenario where the LP releases their funds but fails to release the user’s funds in the destination network:
+    <Steps>
+        <Step title="User Commit">
+            The user creates a commit object on the source network.
+        </Step>
+        <Step title="LP Lock">
+            The LP creates a lock object with the hashlock on the destination chain.
+        </Step>
+        <Step title="User AddLock">
+            The LP releases their funds in the source network but **does not take action on the destination network**.
+        </Step>
+        <Step title="Slash">
+            The user retrieves the secret from the unlock transaction on the source network and then accesses the Atomic Stake Pool to call the slash function, providing the hashlock and the secret. If half of the time has passed from the LP’s lock timelock, this action slashes the LP’s locked funds as a penalty for their misconduct.
+        </Step>
+        <Step title="Unlock">
+            The user then reveals the secret in the destination contract to release their own funds.
+        </Step>
+    </Steps>
+
+    <Info>
+    The only scenario where the destination chain lock remains unreleased but the secret becomes public occurs when the LP claims their funds on the source network before releasing the user’s funds. If the destination chain lock is still active and someone provides the secret to unlock it, this serves as proof of the LP’s misconduct.
+    </Info>
+
+    <Warning>
+    The slash function should also verify that the lock’s timelock is at least halfway expired to prevent MEV attacks, such as extracting the secret from the mem-pool and unfairly punishing the LP.
+    </Warning>
+  </Tab>
+  <Tab title="Code">
+
+    ```solidity
+    contract AtomicPoolEther {
+    
+        // Initializes the Pool on top of the PHTLC contract
+        constructor(address htlc_address) {...}
+
+        error FundsNotSent();
+        error NotFutureTimelock();
+        error NotPassedTimelock();
+        error PoolAlreadyExists();
+        error PoolNotExists();
+        error HashlockNotMatch();
+        error AlreadyPunished();
+        error AlreadyUnlocked();
+        error AlreadyLocked();
+        error CanNotPunish();
+
+        event PoolLocked(address LiquidityProvider, uint256 huge_amount, uint256 long_timelock);
+        event LowLevelErrorOccurred(bytes lowLevelData);
+        event PoolUnlocked(address LiquidityProvider);
+        event LPunished(address punisher, uint256 huge_amount);
+
+        // Stakes the LP's (sender’s) funds in the pool.
+        function poolLock(uint256 timelock) external payable returns (address LiquidityProvider) { ... }
+
+        // Initiates unstake the LP's (sender’s) funds from the pool. Amount will be available for withdraw after 1 day.
+        function initatePoolUnlock(uint256 Id, amount) external _locked(Id) returns (bool) { ... }
+
+        // Withdraws staked amount after `initateUnstake` is called and 1 day passed.
+        function poolUnlock(uint256 Id) external _locked(Id) returns (bool) { ... }
+
+        // If someone knows the secret and the corresponding lock for specified `hashlock` is not released, it means LP can be punished.
+        function punishLP(uint256 Id, uint256 secret, bytes32 hashlock) external _locked(Id) { ... }
+
+        function getPoolDetails(uint256 Id) public view returns (AtomicPool memory) { ... }
+
+        function PoolExists(address LiquidityProvider) internal view returns (bool exists) { ... }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+
+

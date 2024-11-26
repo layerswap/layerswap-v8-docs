@@ -1,0 +1,26 @@
+---
+title: 'Introduction'
+description: 'Introducing Layerswap V8 cross-chain swaps protocol'
+icon: rocket
+---
+
+The Layerswap V8 protocol is a peer-to-peer system for bridging/swapping crypto assets from one blockchain network to another. The protocol is implemented as a set of persistent, non-upgradable smart contracts, deployed to all [supported networks](contracts).
+
+- V8 is built on top of an [improved version of Atomic Swaps](/protocol/atomic-swaps-prehtlc), which allows two parties to exchange assets trustlessly across different chains. Specifically, the two parties are the **user** and the **liquidity provider**. Users send requests to liquidity providers, who fulfill them using Atomic Swaps. There are **no third parties or gatekeepers**; the security of the exchange is fully ensured by the cryptographic protocol.
+- Permissionless on-chain [Discovery](/protocol/discovery) registry, where new LPs and new networks can register.
+- [Permissionless addition](/protocol/usage-add-new-network) of new networks/assets and liquidity providers.
+
+<CardGroup cols={2}>
+  <Card title="Try V8" icon="square-1" href="https://layerswap.io/v8">
+    Try V8 on all major network testnets, including EVM-compatible chains, Starknet, TON, Solana, Aptos, Sui, and Stacks.
+  </Card>
+  <Card title="Protocol Concepts" icon="square-2" href="/protocol/the-protocol">
+    Explore the protocol concepts - Users, LPs, Auctions, Atomic Swaps.
+  </Card>
+  <Card title="Protocol Spec" icon="square-3" href="/protocol-spec">
+    To dig deeper, explore the protocol specification and the details of the protocol design.
+  </Card>
+  <Card title="API Reference" icon="square-4" href="/api-reference">
+    Check the API references for bridge deployment APIs and more.
+  </Card>
+</CardGroup>

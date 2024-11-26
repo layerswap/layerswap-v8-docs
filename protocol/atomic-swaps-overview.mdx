@@ -1,0 +1,36 @@
+---
+title: 'Original HTLC'
+description: 'Introduction to original atomic swaps and challenges with it'
+icon: atom-simple
+---
+
+Atomic Swaps (HTLC - Hashed Time Lock Contract) enable peer-to-peer asset exchange without requiring one chain to know the state of the other. The user generates a Secret and locks funds on the source chain, the LP locks funds on the destination chain, and they exchange the Secret to unlock their respective funds, with a time limit ensuring fund retrieval if the exchange fails.
+
+*The standard HTLC flow looks like this:*
+
+![HTLC](/images/htlc.png)
+
+<Steps>
+  <Step title="User Lock">
+    The user generates a *Secret* S and *Hashlock* HASH(S), then creates an HTLC, locking funds for the selected LP in the source network.
+  </Step>
+  <Step title="LP Lock">
+    The LP detects this HTLC and creates a counterparty HTLC, locking funds for the user (initial amount minus the *LP Fee*) in the destination network.
+  </Step>
+  <Step title="User Unlock">
+    The user detects the HTLC in the destination network and reveals S to claim funds.
+  </Step>
+  <Step title="LP Unlock">
+    The LP detects the revealed S and reveals it in the source network to claim their funds.
+  </Step>
+</Steps>
+
+### Challenges with HTLCs
+
+Despite their potential, HTLCs have proven impractical for real-world bridging due to three main issues:
+
+- **Secret Management**: Users must generate and securely manage a Secret until the counterparty completes their transaction.
+- **Claim Transaction on the Destination Chain**: Users may lack assets on the destination chain, especially if it's their first time interacting with that network.
+- **Liveness**: Users must maintain the state of the bridging process locally and actively monitor and respond to counterparty transactions.
+
+These challenges significantly impact the user experience and create barriers to adoption. The requirement for users to have assets on the destination chain is particularly problematic, as it creates a chicken-and-egg situation for those trying to bridge to a new network for the first time. Furthermore, the user managing the Secret creates a dependency issue. If the user closes the browser, clears the cache, or loses access to the Secret, the transaction flow cannot be recovered from the chain data.
