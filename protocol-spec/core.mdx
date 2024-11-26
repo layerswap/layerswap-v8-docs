@@ -5,137 +5,137 @@ icon: engine
 ---
 
 <Tabs>
-    <Tab title="Overview">
-        The Core of the protocol relies on PreHTLC contract. This contract is responsible for locking and unlocking funds on conditions. The main functions are:
+  <Tab title="Overview">
+    The Core of the protocol relies on PreHTLC contract. This contract is responsible for locking and unlocking funds on conditions. The main functions are:
 
-        <Card title="commit ()" icon="code-commit" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L127">
-        Creates a PreHTLC on the source chain, representing the intent to exchange with a specific party without including a hashlock.
-        </Card>
+    <Card title="commit ()" icon="code-commit" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L127">
+      Creates a PreHTLC on the source chain, representing the intent to exchange with a specific party without including a hashlock.
+    </Card>
 
-        <Card title="lock ()" icon="lock" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L237">
-            Creates an HTLC on the destination chain, locking funds with a specified hashlock and timelock.
-        </Card>
+    <Card title="lock ()" icon="lock" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L237">
+      Creates an HTLC on the destination chain, locking funds with a specified hashlock and timelock.
+    </Card>
 
-        <Card title="addlock () or addLockSig ()" icon="file-lock" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L188">
-        Adds a hashlock to the HTLC on the chain , as well as updates the timelock - finalizing the commitment to the exchange.
-        </Card>
+    <Card title="addlock () or addLockSig ()" icon="file-lock" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L188">
+      Adds a hashlock to the HTLC on the chain , as well as updates the timelock - finalizing the commitment to the exchange.
+    </Card>
 
-        <Card title="redeem ()" icon="lock-open" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L299">
-        Reveals the secret to claim locked funds.
-        </Card>
+    <Card title="redeem ()" icon="lock-open" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L299">
+      Reveals the secret to claim locked funds.
+    </Card>
 
-        <Card title="refund ()" icon="arrow-down-to-line" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L319">
-        Allows the original sender to reclaim their locked funds after the timelock expires if the exchange wasn't completed.
-        </Card>
-    </Tab>
+    <Card title="refund ()" icon="arrow-down-to-line" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L319">
+      Allows the original sender to reclaim their locked funds after the timelock expires if the exchange wasn't completed.
+    </Card>
+  </Tab>
 
-    <Tab title="Code">
-        Implementation of the PreHTLC core contracts can be found at V8 repo for any VM blockchain, like EVM, TON, Solana, Sui, Fuel and more.
+  <Tab title="Code">
+    Implementation of the PreHTLC core contracts can be found at [V8 repo](https://github.com/layerswap/layerswap-atomic-bridge) for any VM blockchain, like [EVM](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/evm/solidity), [TON](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/ton/contracts), [Solana](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/solana), [Sui](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/SUI), Fuel and more.
 
-        ```solidity
-        contract LayerswapV8ERC20 {
+    ```solidity
+    contract LayerswapV8ERC20 {
 
-            // Emitted when one party creates a HTLC, committing tokens for exchange with a specific party. Hop* fields are used for Multihop transactions.
-            event TokenCommitted(
-                bytes32 indexed Id,
-                string[] hopChains,
-                string[] hopAssets,
-                string[] hopAddresses,
-                string dstChain,
-                string dstAddress,
-                string dstAsset,
-                address indexed sender,
-                address indexed srcReceiver,
-                string srcAsset,
-                uint amount,
-                uint timelock,
-                address tokenContract
-            );
+        // Emitted when one party creates a HTLC, committing tokens for exchange with a specific party. Hop* fields are used for Multihop transactions.
+        event TokenCommitted(
+            bytes32 indexed Id,
+            string[] hopChains,
+            string[] hopAssets,
+            string[] hopAddresses,
+            string dstChain,
+            string dstAddress,
+            string dstAsset,
+            address indexed sender,
+            address indexed srcReceiver,
+            string srcAsset,
+            uint amount,
+            uint timelock,
+            address tokenContract
+        );
 
-            // Emitted when a counterparty creates an HTLC on the destination chain with the given.
-            event TokenLocked(
-                bytes32 indexed Id,
-                bytes32 hashlock,
-                string dstChain,
-                string dstAddress,
-                string dstAsset,
-                address indexed sender,
-                address indexed srcReceiver,
-                string srcAsset,
-                uint amount,
-                uint timelock,
-                address tokenContract
-            );
+        // Emitted when a counterparty creates an HTLC on the destination chain with the given.
+        event TokenLocked(
+            bytes32 indexed Id,
+            bytes32 hashlock,
+            string dstChain,
+            string dstAddress,
+            string dstAsset,
+            address indexed sender,
+            address indexed srcReceiver,
+            string srcAsset,
+            uint amount,
+            uint timelock,
+            address tokenContract
+        );
 
-            // Triggered when a party successfully claims locked tokens by revealing the correct secret.
-            event TokenRedeemed(bytes32 indexed Id, address redeemAddress,uint256 secret,bytes32 hashlock);
+        // Triggered when a party successfully claims locked tokens by revealing the correct secret.
+        event TokenRedeemed(bytes32 indexed Id, address redeemAddress,uint256 secret,bytes32 hashlock);
 
-            // Emitted when locked/commited tokens are reclaimed by the original sender after the timelock expires (in case the exchange wasn't completed).
-            event TokenRefunded(bytes32 indexed Id);
-            event LowLevelErrorOccurred(bytes lowLevelData);
+        // Emitted when locked/commited tokens are reclaimed by the original sender after the timelock expires (in case the exchange wasn't completed).
+        event TokenRefunded(bytes32 indexed Id);
+        event LowLevelErrorOccurred(bytes lowLevelData);
 
 
-            function commit(
-                string[] memory hopChains,
-                string[] memory hopAssets,
-                string[] memory hopAddresses,
-                string memory dstChain,
-                string memory dstAsset,
-                string memory dstAddress,
-                string memory srcAsset,
-                address srcReceiver,
-                uint timelock,
-                uint amount,
-                address tokenContract
-            ) external returns (bytes32 Id) { ... }
+        function commit(
+            string[] memory hopChains,
+            string[] memory hopAssets,
+            string[] memory hopAddresses,
+            string memory dstChain,
+            string memory dstAsset,
+            string memory dstAddress,
+            string memory srcAsset,
+            address srcReceiver,
+            uint timelock,
+            uint amount,
+            address tokenContract
+        ) external returns (bytes32 Id) { ... }
 
-            function addLock(bytes32 Id, bytes32 hashlock, uint256 timelock) external _exists(Id) returns (bytes32) { ... }
+        function addLock(bytes32 Id, bytes32 hashlock, uint256 timelock) external _exists(Id) returns (bytes32) { ... }
 
-            function addLockSig(addLockMsg memory message, uint8 v, bytes32 r, bytes32 s) external returns (bytes32) { ... }
+        function addLockSig(addLockMsg memory message, uint8 v, bytes32 r, bytes32 s) external returns (bytes32) { ... }
 
-            /**
-            * @dev Sender / Payer sets up a new hash time lock contract depositing the
-            * funds and providing the reciever and terms.
-            * @param srcReceiver srcReceiver of the funds.
-            * @param hashlock A sha-256 hash hashlock.
-            * @param timelock UNIX epoch seconds time that the lock expires at.
-            *                  unlocks can be made after this time.
-            * @return Id Id of the new HTLC. This is needed for subsequent
-            *                    calls.
-            */
+        /**
+        * @dev Sender / Payer sets up a new hash time lock contract depositing the
+        * funds and providing the reciever and terms.
+        * @param srcReceiver srcReceiver of the funds.
+        * @param hashlock A sha-256 hash hashlock.
+        * @param timelock UNIX epoch seconds time that the lock expires at.
+        *                  unlocks can be made after this time.
+        * @return Id Id of the new HTLC. This is needed for subsequent
+        *                    calls.
+        */
 
-            function lock(
-                bytes32 Id,
-                bytes32 hashlock,
-                uint256 timelock,
-                address srcReceiver,
-                string memory srcAsset,
-                string memory dstChain,
-                string memory dstAddress,
-                string memory dstAsset,
-                uint256 amount,
-                address tokenContract
-            ) external returns (bytes32) { ... }
+        function lock(
+            bytes32 Id,
+            bytes32 hashlock,
+            uint256 timelock,
+            address srcReceiver,
+            string memory srcAsset,
+            string memory dstChain,
+            string memory dstAddress,
+            string memory dstAsset,
+            uint256 amount,
+            address tokenContract
+        ) external returns (bytes32) { ... }
 
-            /**
-            * @dev Called by the srcReceiver once they know the secret of the hashlock.
-            * This will transfer the locked funds to their address.
-            *
-            * @param Id Id of the HTLC.
-            * @param secret sha256(secret) should equal the contract hashlock.
-            * @return bool true on success
-            */
-            function redeem(bytes32 Id, uint256 secret) external _exists(Id) returns (bool) { ... }
+        /**
+        * @dev Called by the srcReceiver once they know the secret of the hashlock.
+        * This will transfer the locked funds to their address.
+        *
+        * @param Id Id of the HTLC.
+        * @param secret sha256(secret) should equal the contract hashlock.
+        * @return bool true on success
+        */
+        function redeem(bytes32 Id, uint256 secret) external _exists(Id) returns (bool) { ... }
 
-            /**
-            * @dev Called by the sender if there was no redeem AND the time lock has
-            * expired. This will refund the contract amount.
-            * @param Id Id of HTLC to refund from.
-            * @return bool true on success
-            */
-            function refund(bytes32 Id) external _exists(Id) returns (bool) { ...}
+        /**
+        * @dev Called by the sender if there was no redeem AND the time lock has
+        * expired. This will refund the contract amount.
+        * @param Id Id of HTLC to refund from.
+        * @return bool true on success
+        */
+        function refund(bytes32 Id) external _exists(Id) returns (bool) { ...}
 
-        }
-        ```
-    </Tab>
+    }
+    ```
+  </Tab>
 </Tabs>
