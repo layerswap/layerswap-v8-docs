@@ -18,3 +18,12 @@ import PreHtlcSteps from '/snippets/prehtlc-steps.mdx';
 <PreHtlcSteps></PreHtlcSteps>
 
 Delegating secret management to the LP does not create trust assumptions. When the LP reveals the Secret to claim funds in the source network, the Secret becomes public, allowing anyone to use it to unlock the user’s funds in the destination network. The protocol incentivizes the release of user funds by reserving a portion of the total bridging fee as a reward for this task.
+
+### The liveness issue
+
+PreHTLCs improve upon HTLCs by delegating secret management and destination claim transactions to the LP. This delegation reduces the liveness issue, allowing the transaction flow to be fully recoverable from on-chain data. However, ensuring the user is live to transmit the Hashlock from the destination chain to the source chain remains crucial.
+
+The protocol demonstrates its full potential in scenarios where:
+
+1. **The user is running a local (light) node**: This setup allows the user to actively participate in the process, monitoring and managing transactions seamlessly.
+2. **The process is managed by user-facing software**: Custodian platforms or local wallets can automate the bridging process, ensuring a smooth and efficient user experience without requiring the user to actively manage the transaction.

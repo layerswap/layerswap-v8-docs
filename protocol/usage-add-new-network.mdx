@@ -6,7 +6,7 @@ icon: network-wired
 
 <Steps>
   <Step title="Contract Implementation">
-    Implement [PreHTLC](atomic-swaps-prehtlc) standards in the network.
+    Implement [PreHTLC](/protocol/atomic-swaps-prehtlc) standards in the network.
   </Step>
   <Step title="LP Agent Implementation">
     If there is no existing implementation (e.g., EVM), implement the LP Agent Chain Library for the new network (functions for interacting with deployed PreHTLC contracts on specific chains).
@@ -15,7 +15,7 @@ icon: network-wired
     Run an LP for two networks—one well connected to others (already active LPs) and the new network.
   </Step>
   <Step title="Register LP">
-    Register the LP and PreHTLC addresses in the [Discovery](discovery) contract.
+    Register the LP and PreHTLC addresses in the [Discovery](/protocol/discovery) contract.
   </Step>
   <Step title="dApp Implementation">
     If there is no existing implementation (e.g., EVM), implement the Client Chain Library for the new network (functions for interacting with wallets on specific chains, subscribing to contract events, and composing user transactions).

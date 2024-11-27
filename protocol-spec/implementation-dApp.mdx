@@ -22,21 +22,21 @@ icon: browser
 </Steps>
 
 <Warning>
-[Edge Case: Party 2 fails to act on commitment](edge-cases)
+[Edge Case: Party 2 fails to act on commitment](/protocol-spec/edge-cases)
 
 - Wait for the `timelock` to expire.
 - Call `refund()` on the source chain to reclaim your funds.
 </Warning>
 
 <Warning>
-[Edge Case: Party 2 fails to release Party 1’s funds](edge-cases)
+[Edge Case: Party 2 fails to release Party 1’s funds](/protocol-spec/edge-cases)
 
 - If funds are not released on the destination chain, watch the source chain for the `TokenRedeemed` event (or `getDetails()` function).
 - Once detected, capture the `secret` and call `redeem()` on the destination chain.
 </Warning>
 
 <Warning>
-[Edge Case: Party 2 fails to release at all](edge-cases)
+[Edge Case: Party 2 fails to release at all](/protocol-spec/edge-cases)
 
 - Wait for the `timelock` to expire.
 - Call `refund()` on the source chain to reclaim your funds.
