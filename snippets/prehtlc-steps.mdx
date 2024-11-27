@@ -9,6 +9,6 @@
     The user observes the transaction on the destination chain, retrieves the Hashlock, and converts their PreHTLC to an HTLC on the source chain. The PreHTLC can only be converted once with a single Hashlock; no other information can be altered - `addLock()`.
   </Step>
   <Step title="Unlocks">
-    Upon seeing this conversion, the LP reveals the Secret S on the source chain to claim their funds and then reveals the Secret S on the destination chain to release the user's funds - `redeem()`.
+    Upon seeing this conversion, the LP reveals the Secret S on the destination chain to release the user's funds and then reveals the Secret S on the source chain to claim their funds - `redeem()`.
   </Step>
 </Steps>

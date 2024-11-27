@@ -12,10 +12,10 @@ Atomic Swaps (HTLC - Hashed Time Lock Contract) enable peer-to-peer asset exchan
 
 <Steps>
   <Step title="User Lock">
-    The user generates a *Secret* S and *Hashlock* HASH(S), then creates an HTLC, locking funds for the selected LP in the source network.
+    The user generates a *Secret* S and computes *Hashlock* HASH(S), then creates an HTLC, locking funds for the selected LP in the source network.
   </Step>
   <Step title="LP Lock">
-    The LP detects this HTLC and creates a counterparty HTLC, locking funds for the user (initial amount minus the *LP Fee*) in the destination network.
+    The LP detects this HTLC and creates a counterparty HTLC with the same Hashlock, locking funds for the user (initial amount minus the *LP Fee*) in the destination network.
   </Step>
   <Step title="User Unlock">
     The user detects the HTLC in the destination network and reveals S to claim funds.
