@@ -1,14 +1,14 @@
 ---
 title: 'Multi-hop transactions'
-description: 'Explains how multiple LPs can be used for connecting networks that dont have direct liqudity connection'
+description: 'Explains how multiple LPs can be used for connecting networks that do not have a direct liquidity connection'
 icon: arrows-turn-to-dots
 ---
 
-By making atomic swaps practical for bridging, we gain a crucial advantage. The same Hashlock can be reused across multiple networks (multi-LP routing) for a single bridging request. Once the Secret is revealed, all linked HTLCs/PreHTLCs in all networks can be unlocked.
+By making atomic swaps practical for bridging, we gain a crucial advantage. The same hashlock can be reused across multiple networks (multi-LP routing) for a single bridging request. Once the secret is revealed, all linked HTLCs/PreHTLCs in all networks can be unlocked.
 
 Let’s assume a user wants to transfer assets from Chain A to Chain C, but no single liquidity provider (LP) supports both chains. Instead, there are two LPs, one supporting transfers from Chain A to Chain B: LP(AB) and another from Chain B to Chain C: LP(BC).
 
-*The protocol facilitates this request as follows*
+*The protocol facilitates this request as follows:*
 
 import MultihopSteps from '/snippets/multihop-steps.mdx';
 

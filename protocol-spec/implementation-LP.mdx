@@ -9,16 +9,16 @@ icon: network-wired
     Subscribe to `TokenCommitted` events to detect any commitments made to your address.
   </Step>
   <Step title="Lock funds on the destination chain">
-    - Generate `S` and `hashlock` .
-    - When a commitment is detected, call `lock()` on the destination chain and pass the generated`hashlock`
+    - Generate `S` and `hashlock`.
+    - When a commitment is detected, call `lock()` on the destination chain and pass the generated `hashlock`.
   </Step>
   <Step title="Verify the commitment lock">
     - Monitor the source chain for the `TokenLockAdded` event (or `getDetails()` function) on the existing commitment.
     - Once detected, verify that the `hashlock` matches the one you previously generated.
-    - Verify that updated `timelock` is at least 2x greater than initial `timelock`.
+    - Verify that the updated `timelock` is at least 2x greater than the initial `timelock`.
   </Step>
   <Step title="(signature flow) hashlock addition on behalf of the user" stepNumber="3*">
-    Call the `addLockSig()` function, providing both the user's `signature` and the message data (`Id`, `hashlock`, `timelock`)
+    Call the `addLockSig()` function, providing both the user's `signature` and the message data (`Id`, `hashlock`, `timelock`).
   </Step>
   <Step title="Complete the exchange" stepNumber="4">
     - Once verified, call `redeem()` on both the source and destination chains.

@@ -6,12 +6,12 @@
     Once detected, LP(AB) creates a PreHTLC for LP(BC).
   </Step>
   <Step title="LP(BC) Lock">
-    Then LP(BC) creates an HTLC for the user.
+    LP(BC) then creates an HTLC for the user.
   </Step>
   <Step title="User, LP(AB) AddLock">
-    The user detects the last transaction, retrieves Hashlock, and converts their PreHTLC to an HTLC in Chain A. LP(AB) does the same in Chain B.
+    The user detects the last transaction, retrieves the hashlock, and converts their PreHTLC to an HTLC on Chain A. LP(AB) does the same on Chain B.
   </Step>
   <Step title="Unlocks">
-    Now, LP(BC) can release the user’s funds on Chain C and claim their funds on Chain B, while LP(AB) can claim their funds on Chain A.
+    LP(BC) can now release the user’s funds on Chain C and claim their funds on Chain B, while LP(AB) can claim their funds on Chain A.
   </Step>
 </Steps>

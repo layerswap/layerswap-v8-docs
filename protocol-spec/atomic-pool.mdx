@@ -52,28 +52,28 @@ icon: pool-8-ball
         error AlreadyPunished();
         error AlreadyUnlocked();
         error AlreadyLocked();
-        error CanNotPunish();
+        error CannotPunish();
 
-        event PoolLocked(address LiquidityProvider, uint256 huge_amount, uint256 long_timelock);
+        event PoolLocked(address liquidityProvider, uint256 amount, uint256 timelock);
         event LowLevelErrorOccurred(bytes lowLevelData);
-        event PoolUnlocked(address LiquidityProvider);
-        event LPunished(address punisher, uint256 huge_amount);
+        event PoolUnlocked(address liquidityProvider);
+        event LPunished(address punisher, uint256 amount);
 
         // Stakes the LP's (sender’s) funds in the pool.
-        function poolLock(uint256 timelock) external payable returns (address LiquidityProvider) { ... }
+        function poolLock(uint256 timelock) external payable returns (address liquidityProvider) { ... }
 
-        // Initiates unstake the LP's (sender’s) funds from the pool. Amount will be available for withdraw after 1 day.
-        function initatePoolUnlock(uint256 Id, amount) external _locked(Id) returns (bool) { ... }
+        // Initiates unstake of the LP's (sender’s) funds from the pool. Amount will be available for withdrawal after 1 day.
+        function initiatePoolUnlock(uint256 Id, uint256 amount) external _locked(Id) returns (bool) { ... }
 
-        // Withdraws staked amount after `initateUnstake` is called and 1 day passed.
+        // Withdraws staked amount after `initiatePoolUnlock` is called and 1 day has passed.
         function poolUnlock(uint256 Id) external _locked(Id) returns (bool) { ... }
 
-        // If someone knows the secret and the corresponding lock for specified `hashlock` is not released, it means LP can be punished.
+        // If someone knows the secret and the corresponding lock for the specified `hashlock` is not released, it means the LP can be punished.
         function punishLP(uint256 Id, uint256 secret, bytes32 hashlock) external _locked(Id) { ... }
 
         function getPoolDetails(uint256 Id) public view returns (AtomicPool memory) { ... }
 
-        function PoolExists(address LiquidityProvider) internal view returns (bool exists) { ... }
+        function poolExists(address liquidityProvider) internal view returns (bool exists) { ... }
     }
     ```
   </Tab>

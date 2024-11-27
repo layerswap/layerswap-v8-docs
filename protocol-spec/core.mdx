@@ -6,7 +6,7 @@ icon: engine
 
 <Tabs>
   <Tab title="Overview">
-    The Core of the protocol relies on PreHTLC contract. This contract is responsible for locking and unlocking funds on conditions. The main functions are:
+    The core of the protocol relies on the PreHTLC contract. This contract is responsible for locking and unlocking funds based on specific conditions. The main functions are:
 
     <Card title="commit ()" icon="code-commit" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L127">
       Creates a PreHTLC on the source chain, representing the intent to exchange with a specific party without including a hashlock.
@@ -17,7 +17,7 @@ icon: engine
     </Card>
 
     <Card title="addlock () or addLockSig ()" icon="file-lock" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L188">
-      Adds a hashlock to the HTLC on the chain , as well as updates the timelock - finalizing the commitment to the exchange.
+      Adds a hashlock to the HTLC on the chain, as well as updates the timelock, finalizing the commitment to the exchange.
     </Card>
 
     <Card title="redeem ()" icon="lock-open" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L299">
@@ -30,12 +30,12 @@ icon: engine
   </Tab>
 
   <Tab title="Code">
-    Implementation of the PreHTLC core contracts can be found at [V8 repo](https://github.com/layerswap/layerswap-atomic-bridge) for any VM blockchain, like [EVM](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/evm/solidity), [TON](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/ton/contracts), [Solana](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/solana), [Sui](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/SUI), Fuel and more.
+    Implementation of the PreHTLC core contracts can be found at the [V8 repo](https://github.com/layerswap/layerswap-atomic-bridge) for any VM blockchain, such as [EVM](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/evm/solidity), [TON](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/ton/contracts), [Solana](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/solana), [Sui](https://github.com/layerswap/layerswap-atomic-bridge/tree/main/chains/SUI), Fuel, and more.
 
     ```solidity
     contract LayerswapV8ERC20 {
 
-        // Emitted when one party creates a HTLC, committing tokens for exchange with a specific party. Hop* fields are used for Multihop transactions.
+        // Emitted when one party creates an HTLC, committing tokens for exchange with a specific party. Hop* fields are used for Multihop transactions.
         event TokenCommitted(
             bytes32 indexed Id,
             string[] hopChains,
