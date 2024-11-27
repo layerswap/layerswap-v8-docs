@@ -4,4 +4,15 @@ description: 'Explains the details of the dApp using the protocol'
 icon: browser
 ---
 
-<Warning>Documentation in progress</Warning>
+<Frame caption="Layerswap V8 Bridging Interface">
+    <img width="300" noZoom src="/images/dApp.png" />
+</Frame>
+
+
+The [Layerswap V8 Bridge dApp](https://layerswap.io/v8) serves as the central interface for seamless cross-chain transactions. It integrates with the LP Discovery mechanism to fetch available liquidity providers (LPs) and participates in the LP auction process to determine optimal routes for bridging.
+
+The dApp has **3** main responsibilities:
+
+1. Connect to the [Discovery registry](/protocol/discovery) and fetch available LPs/networks.
+2. Connect to the [Auction](/protocol/auction) to transmit the user's intent and get quotes from LPs.
+3. Execute an atomic swap flow by locking assets and observing transactions on the destination chain through RPC or Light Client (e.g. [Helios](https://github.com/a16z/helios)).
