@@ -14,23 +14,23 @@ icon: engine
 
     ### Core Functions
 
-    <Card title="commit ()" icon="code-commit" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L127">
+    <Card title="commit ()" icon="code-commit" horizontal="true">
       Creates a PreHTLC on the source chain, representing the intent to exchange with a specific party without including a hashlock.
     </Card>
 
-    <Card title="lock ()" icon="lock" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L237">
+    <Card title="lock ()" icon="lock" horizontal="true">
       Creates an HTLC on the destination chain, locking funds with a specified hashlock and timelock.
     </Card>
 
-    <Card title="addlock () or addLockSig ()" icon="file-lock" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L188">
-      Adds a hashlock to the HTLC on the chain, as well as updates the timelock, finalizing the commitment to the exchange.
+    <Card title="addlock () or addLockSig ()" icon="file-lock" horizontal="true"">
+      Adds a hashlock to the HTLC on the chain, as well as updates the timelock, finalizing the commitment to the exchange. `addLockSig` signs a transaction allowing the other party to execute it on behalf of the initiator.
     </Card>
 
-    <Card title="redeem ()" icon="lock-open" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L299">
+    <Card title="redeem ()" icon="lock-open" horizontal="true">
       Reveals the secret to claim locked funds.
     </Card>
 
-    <Card title="refund ()" icon="arrow-down-to-line" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L319">
+    <Card title="refund ()" icon="arrow-down-to-line" horizontal="true">
       Allows the original sender to reclaim their locked funds after the timelock expires if the exchange wasn't completed.
     </Card>
   </Tab>
