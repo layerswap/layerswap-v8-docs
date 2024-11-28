@@ -6,11 +6,13 @@ icon: engine
 
 <Tabs>
   <Tab title="Overview">
-    The core of the protocol relies on the PreHTLC contract. This contract is responsible for locking and unlocking funds based on specific conditions. The main functions are:
+    The core of the protocol relies on the PreHTLC contract. This contract is responsible for locking and unlocking funds based on specific conditions.
 
     <Frame>
-      ![preHTLC](/images/pre-htlc.png)
+      <img width="300" src="/images/pre-htlc.png" />
     </Frame>
+
+    ### Core Functions
 
     <Card title="commit ()" icon="code-commit" horizontal="true" href="https://github.com/layerswap/layerswap-atomic-bridge/blob/cc092bec92964950c95ef0495f27ea8340dca1a3/chains/evm/solidity/contracts/HashedTimeLockERC20.sol#L127">
       Creates a PreHTLC on the source chain, representing the intent to exchange with a specific party without including a hashlock.
