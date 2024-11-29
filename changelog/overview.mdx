@@ -4,6 +4,19 @@ description: 'New protocol updates and improvements'
 mode: wide
 ---
 
+<Update label="2024-11-29" description="v0.1.1-testnets">
+    - Prepared branch for [EVM security audit](https://github.com/layerswap/layerswap-atomic-bridge/tree/main-audit-evm-11-29-14/chains/evm/solidity/contracts)
+    - EVM Gas Optimization
+
+    | Function | Optimization | Gas (new) | Gas (old) | 
+    |---|---|---|---|
+    | commit() | 52.7% | 146,300 | 309,608 |
+    | addLock() | 56.6% | 34,250 | 78,961 |
+    | addLockSig() | 48.9% | 42,103 | 82,447 |
+    | refund() | 35.5% | 39,460 | 61,262 |
+    | redeem() | 45.5% | 45,835 | 84,110 |
+</Update>
+
 <Update label="2024-11-27" description="v0.1-testnets">
     - Released the first version of the V8 protocol. Live [here](https://layerswap.io/v8) on EVMs, Fuel, Starknet, Solana, and TON testnets.
     - Released the first version of the [Bridge Deployment API](/api-reference).
