@@ -41,105 +41,150 @@ icon: engine
     ```solidity
     contract LayerswapV8ERC20 {
 
-        // Emitted when one party creates an HTLC, committing tokens for exchange with a specific party. Hop* fields are used for Multihop transactions.
-        event TokenCommitted(
-            bytes32 indexed Id,
-            string[] hopChains,
-            string[] hopAssets,
-            string[] hopAddresses,
-            string dstChain,
-            string dstAddress,
-            string dstAsset,
-            address indexed sender,
-            address indexed srcReceiver,
-            string srcAsset,
-            uint amount,
-            uint timelock,
-            address tokenContract
-        );
+      /// @dev Emitted when an HTLC is created and ERC20 tokens are committed.
+      /// @param Id The unique identifier of the HTLC.
+      /// @param hopChains The sequence of chains forming the path from the source to the destination chain.
+      /// @param hopAssets The sequence of assets being swapped along the path.
+      /// @param hopAddresses The sequence of addresses involved along the path.
+      /// @param dstChain The destination blockchain.
+      /// @param dstAddress The recipient address on the destination chain.
+      /// @param dstAsset The asset on the destination chain.
+      /// @param sender The creator of the HTLC.
+      /// @param srcReceiver The recipient of the funds if conditions are met.
+      /// @param srcAsset The asset being locked.
+      /// @param amount The amount of ERC20 tokens locked in the HTLC.
+      /// @param timelock The timestamp after which the funds can be refunded.
+      /// @param tokenContract The address of the ERC20 token contract.
+      event TokenCommitted(
+          bytes32 indexed Id,
+          string[] hopChains,
+          string[] hopAssets,
+          string[] hopAddresses,
+          string dstChain,
+          string dstAddress,
+          string dstAsset,
+          address indexed sender,
+          address indexed srcReceiver,
+          string srcAsset,
+          uint256 amount,
+          uint48 timelock,
+          address tokenContract
+      );
 
-        // Emitted when a counterparty creates an HTLC on the destination chain with the given.
-        event TokenLocked(
-            bytes32 indexed Id,
-            bytes32 hashlock,
-            string dstChain,
-            string dstAddress,
-            string dstAsset,
-            address indexed sender,
-            address indexed srcReceiver,
-            string srcAsset,
-            uint amount,
-            uint timelock,
-            address tokenContract
-        );
+      /// @dev Emitted when an HTLC is locked with a hashlock and timelock.
+      event TokenLocked(
+          bytes32 indexed Id,
+          bytes32 hashlock,
+          string dstChain,
+          string dstAddress,
+          string dstAsset,
+          address indexed sender,
+          address indexed srcReceiver,
+          string srcAsset,
+          uint256 amount,
+          uint48 timelock,
+          address tokenContract
+      );
 
-        // Triggered when a party successfully claims locked tokens by revealing the correct secret.
-        event TokenRedeemed(bytes32 indexed Id, address redeemAddress,uint256 secret,bytes32 hashlock);
+      /// @dev Emitted when a hashlock and timelock are added to an existing HTLC.
+      event TokenLockAdded(bytes32 indexed Id, bytes32 hashlock, uint48 timelock);
 
-        // Emitted when locked/commited tokens are reclaimed by the original sender after the timelock expires (in case the exchange wasn't completed).
-        event TokenRefunded(bytes32 indexed Id);
-        event LowLevelErrorOccurred(bytes lowLevelData);
+      /// @dev Emitted when funds are redeemed from an HTLC using the correct secret.
+      event TokenRedeemed(
+          bytes32 indexed Id,
+          address redeemAddress,
+          uint256 secret,
+          bytes32 hashlock
+      );
+
+      /// @dev Emitted when funds are redeemed from an HTLC using the correct secret.
+      event TokenRefunded(bytes32 indexed Id);
 
 
-        function commit(
-            string[] memory hopChains,
-            string[] memory hopAssets,
-            string[] memory hopAddresses,
-            string memory dstChain,
-            string memory dstAsset,
-            string memory dstAddress,
-            string memory srcAsset,
-            address srcReceiver,
-            uint timelock,
-            uint amount,
-            address tokenContract
-        ) external returns (bytes32 Id) { ... }
+      /// @notice Creates and commits a new hashed time-locked contract (HTLC) for ERC20 tokens.
+      /// @dev Transfers the specified amount of ERC20 tokens to the contract and emits a `TokenCommitted` event.
+      /// @param hopChains The sequence of chains forming the path from the source to the destination chain.
+      /// @param hopAssets The sequence of assets being swapped along the path.
+      /// @param hopAddresses The sequence of addresses involved along the path.
+      /// @param dstChain The destination blockchain.
+      /// @param dstAsset The asset on the destination chain.
+      /// @param dstAddress The recipient address on the destination chain.
+      /// @param srcAsset The asset being locked.
+      /// @param srcReceiver The recipient of the funds if conditions are met.
+      /// @param timelock The timestamp after which the funds can be refunded.
+      /// @param amount The amount of ERC20 tokens to lock in the HTLC.
+      /// @param tokenContract The address of the ERC20 token contract.
+      /// @return Id The unique identifier of the created HTLC.
+      function commit(
+          string[] calldata hopChains,
+          string[] calldata hopAssets,
+          string[] calldata hopAddresses,
+          string calldata dstChain,
+          string calldata dstAsset,
+          string calldata dstAddress,
+          string calldata srcAsset,
+          address srcReceiver,
+          uint48 timelock,
+          uint256 amount,
+          address tokenContract
+      ) external returns (bytes32 Id) { ... }
 
-        function addLock(bytes32 Id, bytes32 hashlock, uint256 timelock) external _exists(Id) returns (bytes32) { ... }
+      /// @notice Adds a hashlock and updates the timelock for an existing HTLC.
+      /// @dev Can only be called by the HTLC's creator if the HTLC exists and has not been claimed. Emits a `TokenLockAdded` event.
+      /// @param Id The unique identifier of the HTLC to update.
+      /// @param hashlock The hashlock to be added.
+      /// @param timelock The new timelock to be set.
+      /// @return bytes32 The updated HTLC identifier.
+      function addLock(bytes32 Id, bytes32 hashlock, uint256 timelock) external _exists(Id) returns (bytes32) { ... }
 
-        function addLockSig(addLockMsg memory message, uint8 v, bytes32 r, bytes32 s) external returns (bytes32) { ... }
 
-        /**
-        * @dev Sender / Payer sets up a new hash time lock contract depositing the
-        * funds and providing the reciever and terms.
-        * @param srcReceiver srcReceiver of the funds.
-        * @param hashlock A sha-256 hash hashlock.
-        * @param timelock UNIX epoch seconds time that the lock expires at.
-        *                  unlocks can be made after this time.
-        * @return Id Id of the new HTLC. This is needed for subsequent
-        *                    calls.
-        */
+      /// @notice Adds a hashlock and updates the timelock for an existing HTLC using a signed message.
+      /// @dev Verifies the provided signature and updates the HTLC if valid. Emits a `TokenLockAdded` event.
+      /// @param message The details of the lock to be added, including the HTLC ID, hashlock, and timelock.
+      /// @param r The `r` value of the ECDSA signature.
+      /// @param s The `s` value of the ECDSA signature.
+      /// @param v The `v` value of the ECDSA signature.
+      /// @return bytes32 The updated HTLC identifier.
+      function addLockSig(addLockMsg memory message, uint8 v, bytes32 r, bytes32 s) external returns (bytes32) { ... }
 
-        function lock(
-            bytes32 Id,
-            bytes32 hashlock,
-            uint256 timelock,
-            address srcReceiver,
-            string memory srcAsset,
-            string memory dstChain,
-            string memory dstAddress,
-            string memory dstAsset,
-            uint256 amount,
-            address tokenContract
-        ) external returns (bytes32) { ... }
+      /// @notice Locks ERC20 tokens in a new hashed time-locked contract (HTLC).
+      /// @dev Transfers the specified amount of ERC20 tokens to the contract and emits a `TokenLocked` event.
+      /// @param Id The unique identifier of the HTLC.
+      /// @param hashlock The hash of the secret required for redemption.
+      /// @param timelock The timestamp after which the funds can be refunded if not claimed.
+      /// @param srcReceiver The recipient of the funds if the HTLC is successfully redeemed.
+      /// @param srcAsset The asset being locked.
+      /// @param dstChain The destination blockchain for the swap.
+      /// @param dstAddress The recipient address on the destination chain.
+      /// @param dstAsset The asset on the destination chain.
+      /// @param amount The amount of ERC20 tokens to lock in the HTLC.
+      /// @param tokenContract The address of the ERC20 token contract.
+      /// @return bytes32 The unique identifier of the created HTLC.
+      function lock(
+          bytes32 Id,
+          bytes32 hashlock,
+          uint256 timelock,
+          address srcReceiver,
+          string memory srcAsset,
+          string memory dstChain,
+          string memory dstAddress,
+          string memory dstAsset,
+          uint256 amount,
+          address tokenContract
+      ) external returns (bytes32) { ... }
 
-        /**
-        * @dev Called by the srcReceiver once they know the secret of the hashlock.
-        * This will transfer the locked funds to their address.
-        *
-        * @param Id Id of the HTLC.
-        * @param secret sha256(secret) should equal the contract hashlock.
-        * @return bool true on success
-        */
-        function redeem(bytes32 Id, uint256 secret) external _exists(Id) returns (bool) { ... }
+      /// @notice Redeems funds from an HTLC using the correct secret.
+      /// @dev Verifies the provided secret against the hashlock and transfers the funds to the recipient. Emits a `TokenRedeemed` event.
+      /// @param Id The unique identifier of the HTLC to be redeemed.
+      /// @param secret The secret value used to unlock the HTLC.
+      /// @return bool Returns `true` if the redemption is successful.
+      function redeem(bytes32 Id, uint256 secret) external _exists(Id) returns (bool) { ... }
 
-        /**
-        * @dev Called by the sender if there was no redeem AND the time lock has
-        * expired. This will refund the contract amount.
-        * @param Id Id of HTLC to refund from.
-        * @return bool true on success
-        */
-        function refund(bytes32 Id) external _exists(Id) returns (bool) { ...}
+      /// @notice Refunds the locked funds from an HTLC after the timelock expires.
+      /// @dev Can only be called if the HTLC exists and the timelock has passed. Emits a `TokenRefunded` event.
+      /// @param Id The unique identifier of the HTLC to be refunded.
+      /// @return bool Returns `true` if the refund is successful.
+      function refund(bytes32 Id) external _exists(Id) returns (bool) { ...}
 
     }
     ```
