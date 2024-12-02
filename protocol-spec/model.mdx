@@ -8,19 +8,19 @@ The protocol model relies on atomic swaps for parties exchanging assets across d
 
 ### Standard flow
 
-When there is a party that directly supports both the source and destination chains and is willing to perform the swap, the standard flow applies. The user calls `commit` by setting the timelock to $T+\Delta$. The party willing to perform the exchange must call the `lock` function on the destination chain, setting the timelock to $T+2\Delta$.
+When a party directly supports both the source and destination chains and is willing to perform the swap, the standard flow applies. The user initiates the process by calling `commit` and setting the timelock to $T + \beta$, where $T$ is the current timestamp and $\beta$ is the duration for which the user is willing to lock their funds. The party performing the exchange must then call the `lock` function on the destination chain, setting the timelock to $T + 2\Delta$ ($\beta < 2\Delta$), where $\Delta$ is a reasonable duration (e.g., 15 minutes) to ensure the user has time to act and leave sufficient time for the party. Finally, the user calls `addLock`, specifying the timelock $T + \Delta$ and completing their commitment with a hashlock.
 
 Here are the steps:
 
 <Steps>
   <Step title="User Commit">
-    The user creates a commit object on the source chain.
+    The user creates a commit object on the source chain with a timelock of $T + \beta$.
   </Step>
   <Step title="Party Lock">
-    The party creates a lock object on the destination chain.
+    The party creates a lock object on the destination chain with a hashlock and a timelock of $T + 2\Delta$.
   </Step>
   <Step title="User AddLock">
-    The user adds a lock to the commitment on the source chain.
+    The user adds a lock to the commitment on the source chain, adding a hashlock and updating the timelock to $T + \Delta$.
   </Step>
   <Step title="Party Redeem">
     The party redeems the locked funds on the destination chain.
@@ -43,7 +43,7 @@ sequenceDiagram
     P2->>DC: lock()
     DC-->>P1: TokenLocked
     P1->>SC: addLock()
-    SC-->>P2: TokenLocked
+    SC-->>P2: TokenLockAdded
     P2->>DC: redeem()
     DC-->>P1: TokenRedeemed
     P2->>SC: redeem()
@@ -53,13 +53,11 @@ sequenceDiagram
 
 ### Multi-hop flow
 
-When transferring funds from a source chain to a destination chain isn't possible due to a lack of any party directly linking the two, the swap is completed using a multi-hop approach (with chain length $n$). In this setup, the user initially commits funds on the source chain to the first party. Each party calls `commit` so committing funds for the next party in the sequence, with the final party on the destination chain calls `lock` , locking the funds with a `hashlock` and the longest `timelock`, set to $T + 2^{n-1}\Delta$ .
+When transferring funds from a source chain to a destination chain is not possible due to the absence of a party directly linking the two, a multi-hop approach is used, with the chain length denoted as $n$. In this process, the user initially commits funds on the source chain to the first party. Each party in the sequence subsequently calls commit, committing funds for the next party, until the final party on the destination chain calls lock. This locks the funds with a hashlock and the longest timelock, set to $T + 2^{n-1}\Delta$, where $T$ is the current timestamp and $\Delta$ is a reasonable duration (e.g., 15 minutes). The liquidity provider (LP) on the destination chain locks funds with a duration of $2^{n-1}\Delta$ from the current timestamp, ensuring sufficient time for each LP in the chain to act.
 
-Subsequently, each party from the second-to-last in the chain back to the source performs the `addLock` function with the same `hashlock` as used on the destination chain, but with progressively shorter `timelock`s—starting from $T + 2^{0}\Delta$ for the second-to-last party. This process continues recursively, with each party adding a lock using the `hashlock` and `timelock` specific to its position in the chain.
+Following this, each party in the hop-chain, starting from the user to the second-to-last party, performs the addLock function with the same hashlock as used on the destination chain but with progressively shorter timelocks. For the user, the timelock is set to $T + 2^{n-2}\Delta$, while for the second-to-last party, it is $T + 2^0\Delta$. This pattern continues recursively, with each party adding a lock using the hashlock and a timelock specific to their position in the chain.
 
-Finally, the user on the source chain calls `addLock` with the `hashlock` and `timelock` $T+2^{n-2}\Delta$. At this point, all parties have locked funds with both a `hashlock` and `timelock`.
-
-When the party on the destination chain calls `redeem`  , revealing the secret, he transfers the user’s funds and redeems the locked funds for himself. This secret revelation allows each preceding party, one by one, to `redeem` their funds back through the chain, completing the multi-hop swap.
+When the party on the destination chain calls redeem and reveals the secret, they transfer the user's funds and redeem the locked funds for themselves. This revelation of the secret allows each preceding party in the chain to sequentially redeem their funds, completing the multi-hop swap.
 
 Here are the steps:
 
@@ -84,10 +82,10 @@ sequenceDiagram
     IC-->>P3: TokenCommitted
     P3->>DC: lock()
     DC-->>P1: TokenLocked
-    P1->>SC: lockCommitment()
-    DC-->>P2: TokenLocked
+    P1->>SC: addLock()
+    SC-->>P2: TokenLockAdded
     P2->>IC: addLock()
-    IC-->>P3: TokenLocked
+    IC-->>P3: TokenLockAdded
     P3->>DC: redeem()
     DC-->P1: TokenRedeemed
     P3->>IC: redeem()

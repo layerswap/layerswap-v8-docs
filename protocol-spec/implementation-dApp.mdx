@@ -6,15 +6,15 @@ icon: browser
 
 <Steps>
   <Step title="Create a commitment">
-    Call the `commit()` function to lock funds for a specified party.
+    Call the `commit()` function to lock funds for a specified party with a timelock of [$T + \beta$](/protocol-spec/model/#standard-flow).
   </Step>
   <Step title="Monitor the destination chain">
     - Watch for the `TokenLocked` event or use the `Id` on the destination chain by calling `getDetails()`.
-    - Verify that the `timelock` of the `HTLC` on the source chain is at least 2x greater than the `timelock` of the `HTLC` on the destination chain.
+    - Verify that the `hashlock` of the `HTLC` on the destination chain provides sufficient time to act, ensuring it is at least [$T + 2\Delta$](/protocol-spec/model/#standard-flow).
     - Once detected, capture the `hashlock` value.
   </Step>
   <Step title="Add lock to your PreHTLC on the source chain">
-    Call `addLock()`, passing in the captured `hashlock`.
+    Call `addLock()`, passing in the captured `hashlock` and `timelock` of [$T + \Delta$](/protocol-spec/model/#standard-flow).
   </Step>
   <Step title="(signature flow) Sign a message instead of adding a lock" stepNumber="3*">
     The user signs a message containing the `Id`, `hashlock`, and `timelock`.

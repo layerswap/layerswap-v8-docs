@@ -20,8 +20,8 @@ sequenceDiagram
     SC-->>P2: TokenCommitted
     P2->>DC: lock()
     DC-->>P1: TokenLocked
-    P1->>SC: lockCommitment()
-    SC-->>P2: TokenLocked
+    P1->>SC: addLock()
+    SC-->>P2: TokenLockAdded
     P2->>SC: redeem()
 	  SC-->>P1: TokenRedeemed
     P1->>DC: redeem()
@@ -44,14 +44,14 @@ sequenceDiagram
     SC-->>P2: TokenCommitted
     P2->>DC: lock()
     DC-->>P1: TokenLocked
-    P1->>SC: lockCommitment()
-    SC-->>P2: TokenLocked
+    P1->>SC: addLock()
+    SC-->>P2: TokenLockAdded
     Note over P2,DC: Timelock passes
-    P2->>DC: unlock()
-	  DC-->>P2: TokenUnlocked
+    P2->>DC: refund()
+	  DC-->>P2: TokenRefunded
 	  Note over P1,SC: Timelock passes
-    P1->>SC: unlock()
-    SC-->>P1: TokenUnlocked
+    P1->>SC: refund()
+    SC-->>P1: TokenRefunded
 ```
 
 </Accordion>
@@ -72,12 +72,12 @@ sequenceDiagram
     DC-->>P2: TokenLocked
     
     Note over P1,SC: Timelock passes
-    P1->>SC: uncommit()
-    SC-->>P1: TokenUncommited
+    P1->>SC: refund()
+    SC-->>P1: TokenRefunded
 		
 		Note over P2,DC: Timelock passes
-    P2->>DC: unlock()
-    DC-->>P2: TokenUnlocked
+    P2->>DC: refund()
+    DC-->>P2: TokenRefunded
 ```
 
 ### Party 2 fails to act on commitment
@@ -94,8 +94,8 @@ sequenceDiagram
     SC-->>P2: TokenCommitted
     
     Note over P1,SC: Timelock passes
-    P1->>SC: uncommit()
-    SC-->>P1: TokenUncommited
+    P1->>SC: refund()
+    SC-->>P1: TokenRefunded
 ```
 </Accordion>
 </AccordionGroup>
