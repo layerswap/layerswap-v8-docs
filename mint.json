@@ -159,6 +159,13 @@
           { "label": "Docs", "url": "https://docs.layerswap.io" },
           { "label": "Explorer", "url": "https://layerswap.io/explorer" }
         ]
+      },
+      {
+        "title": "Layerswap V8",
+        "links": [
+          { "label": "App", "url": "https://layerswap.io/v8" },
+          { "label": "Docs", "url": "https://v8-docs.layerswap.io" }
+        ]
       }
     ]
   }
