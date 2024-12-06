@@ -17,6 +17,9 @@ icon: pool-8-ball
             The LP creates a lock object with the hashlock on the destination chain.
         </Step>
         <Step title="User AddLock">
+            The user observes the transaction on the destination chain, retrieves the Hashlock, and converts their PreHTLC to an HTLC on the source chain.
+        </Step>
+        <Step title="LP Unlock">
             The LP releases their funds in the source network but **does not take action on the destination network**.
         </Step>
         <Step title="Slash">
