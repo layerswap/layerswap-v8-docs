@@ -18,7 +18,7 @@ The dApp has **three** main responsibilities:
 - Connect to the [Auction](/protocol/auction) to transmit the user's intent and get quotes from Solvers.
 - Execute an [Atomic Swap](/protocol/atomic-swaps-prehtlc) flow.
 
-### Observing the destination lock
+### Observing the destination network
 
 The dApp must observe the destination lock created by the Solver and provide the `hashlock` to the user to complete the atomic swap process. Observing this transaction can be done in the following ways, in order of priority:
 1. Bootstrap a Light Client (e.g., [Helios](https://github.com/a16z/helios)) for the destination chain and read the lock state from it.
