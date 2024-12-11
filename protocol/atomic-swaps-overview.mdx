@@ -4,7 +4,7 @@ description: 'Introduction to original atomic swaps and their challenges'
 icon: atom-simple
 ---
 
-Atomic Swaps (HTLC - Hashed Time Lock Contract) enable peer-to-peer asset exchange without requiring one chain to know the state of the other. The user generates a secret and locks funds on the source chain, the liquidity provider (LP) locks funds on the destination chain, and they exchange the secret to unlock their respective funds, with a time limit ensuring fund retrieval if the exchange fails.
+Atomic Swaps (HTLC - Hashed Time Lock Contract) enable peer-to-peer asset exchange without requiring one chain to know the state of the other. The user generates a secret and locks funds on the source chain, the Solver locks funds on the destination chain, and they exchange the secret to unlock their respective funds, with a time limit ensuring fund retrieval if the exchange fails.
 
 ### The standard HTLC flow
 
@@ -14,16 +14,16 @@ Atomic Swaps (HTLC - Hashed Time Lock Contract) enable peer-to-peer asset exchan
 
 <Steps>
   <Step title="User Lock">
-    The user generates a *secret* S and computes *hashlock* HASH(S), then creates an HTLC, locking funds for the selected LP in the source network.
+    The user generates a *secret* S and computes *hashlock* HASH(S), then creates an HTLC, locking funds for the selected Solver in the source network.
   </Step>
-  <Step title="LP Lock">
-    The LP detects this HTLC and creates a counterparty HTLC with the same hashlock, locking funds for the user (initial amount minus the *LP fee*) in the destination network.
+  <Step title="Solver Lock">
+    The Solver detects this HTLC and creates a counterparty HTLC with the same hashlock, locking funds for the user (initial amount minus the *Solver fee*) in the destination network.
   </Step>
   <Step title="User Unlock">
     The user detects the HTLC in the destination network and reveals S to claim the funds.
   </Step>
-  <Step title="LP Unlock">
-    The LP detects the revealed S and reveals it in the source network to claim their funds.
+  <Step title="Solver Unlock">
+    The Solver detects the revealed S and reveals it in the source network to claim their funds.
   </Step>
 </Steps>
 

@@ -111,7 +111,7 @@
           "icon": "chart-network",
           "pages": [
             "protocol-spec/implementation-dApp",
-            "protocol-spec/implementation-LP"
+            "protocol-spec/implementation-solver"
           ]
         }
       ]
