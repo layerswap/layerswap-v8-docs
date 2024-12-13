@@ -106,6 +106,7 @@
         "protocol-spec/core",
         "protocol-spec/atomic-pool",
         "protocol-spec/discovery",
+        "protocol-spec/auction",
         {
           "group": "Implementation",
           "icon": "chart-network",
@@ -155,16 +156,16 @@
       {
         "title": "Layerswap V0",
         "links": [
-          { "label": "App", "url": "https://layerswap.io/app" },
-          { "label": "Docs", "url": "https://docs.layerswap.io" },
+          { "label": "V0 App", "url": "https://layerswap.io/app" },
+          { "label": "V0 Docs", "url": "https://v0-docs.layerswap.io" },
           { "label": "Explorer", "url": "https://layerswap.io/explorer" }
         ]
       },
       {
         "title": "Layerswap V8",
         "links": [
-          { "label": "App", "url": "https://layerswap.io/v8" },
-          { "label": "Docs", "url": "https://v8-docs.layerswap.io" }
+          { "label": "V8 App", "url": "https://layerswap.io/v8" },
+          { "label": "V8 Docs", "url": "https://v8-docs.layerswap.io" }
         ]
       }
     ]
