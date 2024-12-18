@@ -176,7 +176,7 @@
   },
   "metadata": {
     "og:title": "Layerswap V8 | Cross-Chain Swaps Protocol",
-    "og:description": "Layerswap V8 is a trustless cross-chain swaps protocol with permissionless onboarding for any new EVM and altVM network.",
+    "og:description": "Layerswap V8 is an intent-based, trustless cross-chain swaps protocol with permissionless onboarding for any new EVM and altVM network.",
     "og:logo": "/logo/dark.svg"
   }
 }
