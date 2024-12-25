@@ -109,7 +109,7 @@
         "protocol-spec/model",
         "protocol-spec/edge-cases",
         "protocol-spec/core",
-        "protocol-spec/atomic-pool",
+        "protocol-spec/reward-slashing",
         "protocol-spec/discovery",
         "protocol-spec/auction",
         {

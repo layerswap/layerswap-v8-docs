@@ -1,14 +1,11 @@
 ---
-title: 'Slashing'
+title: 'Reward-Slash Mechanism'
 description: 'Incentivizing Solvers to act honestly without creating inconveniences for users'
 icon: slash
 ---
 
-Solvers can sometimes misbehave, presenting several edge cases. For instance, an Solver might choose not to release the user’s funds. In all possible scenarios, funds are not lost since the user can manually claim their funds.
+Solvers can sometimes misbehave, leading to various edge cases. For example, a Solver might refuse to release a user’s funds. While users can always manually claim their funds, ensuring no loss, this process creates significant inconvenience.
 
-However, this creates a significant inconvenience for users. These issues need to be addressed by properly incentivizing Solvers to act correctly. 
-We introduce an [Atomic Pool](/protocol-spec/atomic-pool) where Solvers voluntarily stake a small portion of their funds as a guarantee to ensure they release the user’s funds. If they fail to do so, they agree to be penalized by having their staked funds, or a portion thereof, slashed. 
+To address this, we introduce a [Reward-Slashing Mechanism](/protocol-spec/reward-slashing) to incentivize Solvers to act correctly. When locking funds for a user, the Solver also locks an additional reward amount with a timelock. If the Solver successfully transfers the user’s assets before the timelock expires, the reward is released to the Solver. However, if the Solver fails to act in time, the reward is transferred to the party that executes the function to release the user’s assets. 
 
-The main idea is that if anyone can provide a secret on the destination chain for the destination lock and the destination lock is not released to the user, it means Solvers acted dishonestly, so they get [slashed](/protocol-spec/atomic-pool).
-
-Solvers with locked amounts in the Atomic Pool will be more favorable to users during the Solver selection process.
+This mechanism serves as both an incentive for the Solver and a penalty (or "slash") for failing to fulfill their responsibility.
