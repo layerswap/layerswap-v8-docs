@@ -1,11 +1,12 @@
 ---
-title: 'Reward-Slash Mechanism'
+title: 'Reward-Slash'
 description: 'Explains how the system penalizes Solver misbehavior and rewards others for acting to release user funds.'
-icon: pool-8-ball
+icon: slash
 ---
 <Warning>
 While users can always manually claim their funds, this protocol aims to prevent delays and inconvenience through economic incentives.
 </Warning>
+
 Solvers can exhibit unpredictable behavior that leads to various edge cases, such as refusing to release user funds. While users always retain the ability to manually claim their funds, preventing any permanent loss, this situation creates significant inconvenience.
 
 ## Core Mechanism
@@ -42,7 +43,7 @@ if (!rewardTimelock.expired) {
 
 ## Security Considerations
 
-The **rewardTimelock** serves as a crucial protection against MEV attacks. It provides Solvers adequate time to assess whether they can execute the **redeem** function within the specified timeframe. Even if Solvers miss their initial window, they can still call the function later to retrieve their reward, provided no one else has already executed it.
+The `rewardTimelock` serves as a crucial protection against MEV attacks. It provides Solvers adequate time to assess whether they can execute the **redeem** function within the specified timeframe. Even if Solvers miss their initial window, they can still call the function later to retrieve their reward, provided no one else has already executed it.
 
 
 
