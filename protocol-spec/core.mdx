@@ -72,18 +72,22 @@ icon: engine
       );
 
       /// @dev Emitted when an HTLC is locked with a hashlock and timelock.
+      /// @param reward The reward amount (in ERC20 token) associated with the HTLC.
+      /// @param rewardTimelock The timelock (timestamp) after which the reward can be claimed.
       event TokenLocked(
-          bytes32 indexed Id,
-          bytes32 hashlock,
-          string dstChain,
-          string dstAddress,
-          string dstAsset,
-          address indexed sender,
-          address indexed srcReceiver,
-          string srcAsset,
-          uint256 amount,
-          uint48 timelock,
-          address tokenContract
+        bytes32 indexed Id,
+        bytes32 hashlock,
+        string dstChain,
+        string dstAddress,
+        string dstAsset,
+        address indexed sender,
+        address indexed srcReceiver,
+        string srcAsset,
+        uint256 amount,
+        uint256 reward,
+        uint48 rewardTimelock,
+        uint48 timelock,
+        address tokenContract
       );
 
       /// @dev Emitted when a hashlock and timelock are added to an existing HTLC.
@@ -116,18 +120,18 @@ icon: engine
       /// @param tokenContract The address of the ERC20 token contract.
       /// @return Id The unique identifier of the created HTLC.
       function commit(
-          string[] calldata hopChains,
-          string[] calldata hopAssets,
-          string[] calldata hopAddresses,
-          string calldata dstChain,
-          string calldata dstAsset,
-          string calldata dstAddress,
-          string calldata srcAsset,
-          address srcReceiver,
-          uint48 timelock,
-          uint256 amount,
-          address tokenContract
-      ) external returns (bytes32 Id) { ... }
+        string[] calldata hopChains,
+        string[] calldata hopAssets,
+        string[] calldata hopAddresses,
+        string calldata dstChain,
+        string calldata dstAsset,
+        string calldata dstAddress,
+        string calldata srcAsset,
+        address srcReceiver,
+        uint48 timelock,
+        uint256 amount,
+        address tokenContract
+      ) external _validTimelock(timelock) nonReentrant returns (bytes32 Id) { ... }
 
       /// @notice Adds a hashlock and updates the timelock for an existing HTLC.
       /// @dev Can only be called by the HTLC's creator if the HTLC exists and has not been claimed. Emits a `TokenLockAdded` event.
@@ -135,7 +139,11 @@ icon: engine
       /// @param hashlock The hashlock to be added.
       /// @param timelock The new timelock to be set.
       /// @return bytes32 The updated HTLC identifier.
-      function addLock(bytes32 Id, bytes32 hashlock, uint256 timelock) external _exists(Id) returns (bytes32) { ... }
+      function addLock(
+        bytes32 Id,
+        bytes32 hashlock,
+        uint48 timelock
+      ) external _exists(Id) _validTimelock(timelock) nonReentrant returns (bytes32) { ... }
 
 
       /// @notice Adds a hashlock and updates the timelock for an existing HTLC using a signed message.
@@ -145,12 +153,19 @@ icon: engine
       /// @param s The `s` value of the ECDSA signature.
       /// @param v The `v` value of the ECDSA signature.
       /// @return bytes32 The updated HTLC identifier.
-      function addLockSig(addLockMsg memory message, uint8 v, bytes32 r, bytes32 s) external returns (bytes32) { ... }
+      function addLockSig(
+        addLockMsg calldata message,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+      ) external _exists(message.Id) _validTimelock(message.timelock) nonReentrant returns (bytes32) { ... }
 
       /// @notice Locks ERC20 tokens in a new hashed time-locked contract (HTLC).
       /// @dev Transfers the specified amount of ERC20 tokens to the contract and emits a `TokenLocked` event.
       /// @param Id The unique identifier of the HTLC.
       /// @param hashlock The hash of the secret required for redemption.
+      /// @param reward The reward amount in ERC20 token granted to the caller of redeem.
+      /// @param rewardTimelock The timelock (timestamp) after which the reward can be claimed.
       /// @param timelock The timestamp after which the funds can be refunded if not claimed.
       /// @param srcReceiver The recipient of the funds if the HTLC is successfully redeemed.
       /// @param srcAsset The asset being locked.
@@ -161,30 +176,32 @@ icon: engine
       /// @param tokenContract The address of the ERC20 token contract.
       /// @return bytes32 The unique identifier of the created HTLC.
       function lock(
-          bytes32 Id,
-          bytes32 hashlock,
-          uint256 timelock,
-          address srcReceiver,
-          string memory srcAsset,
-          string memory dstChain,
-          string memory dstAddress,
-          string memory dstAsset,
-          uint256 amount,
-          address tokenContract
-      ) external returns (bytes32) { ... }
+        bytes32 Id,
+        bytes32 hashlock,
+        uint256 reward,
+        uint48 rewardTimelock,
+        uint48 timelock,
+        address srcReceiver,
+        string calldata srcAsset,
+        string calldata dstChain,
+        string calldata dstAddress,
+        string calldata dstAsset,
+        uint256 amount,
+        address tokenContract
+      ) external _validTimelock(timelock) nonReentrant returns (bytes32) { ... }
 
       /// @notice Redeems funds from an HTLC using the correct secret.
       /// @dev Verifies the provided secret against the hashlock and transfers the funds to the recipient. Emits a `TokenRedeemed` event.
       /// @param Id The unique identifier of the HTLC to be redeemed.
       /// @param secret The secret value used to unlock the HTLC.
       /// @return bool Returns `true` if the redemption is successful.
-      function redeem(bytes32 Id, uint256 secret) external _exists(Id) returns (bool) { ... }
+      function redeem(bytes32 Id, uint256 secret) external _exists(Id) nonReentrant returns (bool) { ... }
 
       /// @notice Refunds the locked funds from an HTLC after the timelock expires.
       /// @dev Can only be called if the HTLC exists and the timelock has passed. Emits a `TokenRefunded` event.
       /// @param Id The unique identifier of the HTLC to be refunded.
       /// @return bool Returns `true` if the refund is successful.
-      function refund(bytes32 Id) external _exists(Id) returns (bool) { ...}
+      function refund(bytes32 Id) external _exists(Id) nonReentrant returns (bool) { ...}
 
     }
     ```
