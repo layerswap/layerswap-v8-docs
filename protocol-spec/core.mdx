@@ -114,11 +114,12 @@ icon: engine
       /// @param dstAsset The asset on the destination chain.
       /// @param dstAddress The recipient address on the destination chain.
       /// @param srcAsset The asset being locked.
+      /// @param Id The unique identifier of the created HTLC.
       /// @param srcReceiver The recipient of the funds if conditions are met.
       /// @param timelock The timestamp after which the funds can be refunded.
       /// @param amount The amount of ERC20 tokens to lock in the HTLC.
       /// @param tokenContract The address of the ERC20 token contract.
-      /// @return Id The unique identifier of the created HTLC.
+      /// @return bytes32 The unique identifier of the created HTLC.
       function commit(
         string[] calldata hopChains,
         string[] calldata hopAssets,
@@ -127,11 +128,12 @@ icon: engine
         string calldata dstAsset,
         string calldata dstAddress,
         string calldata srcAsset,
+        bytes32 Id,
         address srcReceiver,
         uint48 timelock,
         uint256 amount,
         address tokenContract
-      ) external _validTimelock(timelock) nonReentrant returns (bytes32 Id) { ... }
+      ) external _validTimelock(timelock) nonReentrant returns (bytes32) { ... }
 
       /// @notice Adds a hashlock and updates the timelock for an existing HTLC.
       /// @dev Can only be called by the HTLC's creator if the HTLC exists and has not been claimed. Emits a `TokenLockAdded` event.
@@ -155,9 +157,9 @@ icon: engine
       /// @return bytes32 The updated HTLC identifier.
       function addLockSig(
         addLockMsg calldata message,
-        uint8 v,
         bytes32 r,
-        bytes32 s
+        bytes32 s,
+        uint8 v
       ) external _exists(message.Id) _validTimelock(message.timelock) nonReentrant returns (bytes32) { ... }
 
       /// @notice Locks ERC20 tokens in a new hashed time-locked contract (HTLC).
